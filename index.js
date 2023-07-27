@@ -1,25 +1,23 @@
 const express = require("express");
+const mongoose = require("mongoose");
 
 const server = express();
-
-const morgan = require("morgan");
-
-const productRouter = require("./Routes/Product");
-const userRouter = require("./Routes/user");
-
-//body parser
 server.use(express.json());
 
-server.use(morgan("default"));
-server.use("/Products", productRouter.router);
-server.use("/users", userRouter.router);
+main().catch((err) => console.log(err));
 
-//Api-Routes-Endpoints
+async function main() {
+  await mongoose.connect("mongodb://127.0.0.1:27017/Test1");
+  console.log("database connected");
+}
 
-//API_ROOT ,base URL ,example Googl.com/api/v2/
+const productRouter = require("./Routes/ProductRoutes");
+// const userRouter = require("./Routes/UserRoutes");
 
-//create api ==> Create Post /Products
+// server.use(morgan("default"));
+server.use("/products", productRouter.router);
+// server.use("/users", userRouter.router);
 
-server.listen(5000, () => {
+server.listen(8080, () => {
   console.log("server started");
 });
